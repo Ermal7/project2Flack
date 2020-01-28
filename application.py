@@ -19,13 +19,8 @@ channel_names=[]
 
 @app.route("/")
 def index():
-    if session.get("user") is None:
-        session["user"]=[]
-
-
-    return render_template("index.html", notes=session["notes"])
-
-
-
-if __name__ == '__main__':
-    socketio.run(app)
+    if session.get("username") is None:
+        session["username"]=[]
+        return render_template("index1.html")
+    else:
+        return render_template("index2.html",username=session["usernotes"])
