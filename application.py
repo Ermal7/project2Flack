@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask,render_template, session
+from flask import Flask,render_template, session,request
 from flask_socketio import SocketIO, emit
 from flask_session import Session
 
@@ -17,10 +17,18 @@ Session(app)
 display_names=[]
 channel_names=[]
 
-@app.route("/")
+@app.route("/",methods=["GET", "POST"])
 def index():
-    if session.get("username") is None:
-        session["username"]=[]
-        return render_template("index1.html")
+    if request.method == "GET":
+        if session.get("display_name") is None:
+            return render_template("register.html")
+        else:
+            return render_template("index.html", display_name=session["display_name"],display_names=display_names)
+
     else:
-        return render_template("index2.html",username=session["usernotes"])
+        if session.get("display_name") is None:
+            display_name = request.form.get("display_name")
+            session["display_name"]= display_name
+            display_names.append(display_name)
+            #printf(display_names)
+        return render_template("index.html", display_name=session["display_name"],display_names=display_names)
