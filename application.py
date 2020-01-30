@@ -19,27 +19,33 @@ channel_names=[]
 
 @app.route("/",methods=["GET", "POST"])
 def index():
+    if session.get("current_channel") is None:
+        session["current_channel"]= ""
+
     if request.method == "GET":
         if session.get("display_name") is None:
             return render_template("register.html")
         else:
-            return render_template("index.html", display_name=session["display_name"],display_names=display_names,channel_names=channel_names)
+            return render_template("index.html",selected_channel=session["current_channel"], display_name=session["display_name"], display_names=display_names, channel_names=channel_names)
 
     else:
         if session.get("display_name") is None:
             display_name = request.form.get("display_name")
             session["display_name"]= display_name
             display_names.append(display_name)
-            #printf(display_names)
-        return render_template("index.html", display_name=session["display_name"],display_names=display_names,channel_names=channel_names)
+        return render_template("index.html", selected_channel=session["current_channel"], display_name=session["display_name"], display_names=display_names, channel_names=channel_names)
+
+@app.route("/select",methods=["POST"])
+def select():
+    session["current_channel"] = request.form.get("selected_channel")
+    return
 
 
-
-@app.route("/create", methods=["POST"])
-def create_channel():
-    new_channel = request.form.get("channel_name")
+@socketio.on("add channel")
+def vote(data):
+    new_channel = data["new_channel"]
     for channel in channel_names:
         if channel == new_channel:
-            return "exists"
+            return
     channel_names.append(new_channel)
-    return new_channel
+    emit("append channel", {"new_channel": new_channel}, broadcast=True)

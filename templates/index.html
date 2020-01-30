@@ -12,6 +12,7 @@
          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
          <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
          <script src="{{ url_for('static', filename='index.js') }}"></script>
         <title>FLACK</title>
@@ -29,56 +30,36 @@
       <div class="row">
         <div class="col-2"></div>
         <div class="col-6">
-          <h6 style="color:black;text-float:center;margin-bottom:30px;"><strong>You are logged in as {{display_name}}</strong></h6>
+          <h6 style="color:black;text-float:left;margin-bottom:30px;"><strong>You are logged in as <span style="color:green;">{{display_name}}</span></strong></h6>
         </div>
         <div class="col-4"></div>
       </div>
 
       <!--Registered Users List-->
       <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6"><h6 style="color:blue;text-float:center;margin-bottom:30px;"><strong>Registered Users:</strong></h6></div>
-        <div class="col-3"></div>
+        <div class="col-2"></div>
+        <div class="col-6"><h6 style="color:blue;text-float:left;margin-bottom:30px;"><strong>Registered Users:</strong></h6></div>
+        <div class="col-4"></div>
       </div>
       <div class="row">
-        <div class="col-3"></div>
+        <div class="col-2"></div>
         <div class="col-6">
-          <ul id="display_names" style="list-style: none;">
+          <ul id="display_names" style="list-style: none;text-float:left;">
             {% for name in display_names %}
               <li>
-                  <p> Display Name: {{name}}</p>
+                  <p> Display Name: <span style="color:green;"> {{name}}</span></p>
               </li>
           {% endfor %}
           </ul>
         </div>
-        <div class="col-3"></div>
-      </div>
-
-      <!--Existing Channels-->
-      <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6"><h6 style="color:blue;text-float:center;margin-bottom:30px;"><strong>Existing Channels:</strong></h6></div>
-        <div class="col-3"></div>
-      </div>
-      <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6">
-          <ul id="channels" style="list-style: none;">
-            {% for channel in channel_names %}
-              <li>
-                  <a>{{channel}}</a>
-              </li>
-          {% endfor %}
-          </ul>
-        </div>
-        <div class="col-3"></div>
+        <div class="col-4"></div>
       </div>
 
       <!--Create a Channel Form-->
-      <div class="row">
+      <div class="row" style="margin-top: 30px;">
         <div class="col-2"></div>
         <div class="col-8">
-          <h6 style="color:black;text-float:center;margin-bottom:5px;"> <strong>Create a New Channel:</strong></h6>
+          <h6 style="text-float:center;margin-bottom:5px;"> <strong style="color:blue;">Create a New Channel:</strong></h6>
           <form id="channelform">
             <div class="form-group">
               <label for="usr2">Channel Name:</label>
@@ -90,8 +71,31 @@
         <div class="col-2"></div>
       </div>
 
-
-
+      <!--Existing Channels-->
+      <div class="row" style="margin-top: 30px;">
+        <div class="col-2"></div>
+        <div class="col-6"><h6 style="color:blue;text-float:left;margin-bottom:30px;"><strong>Existing Channels:</strong></h6></div>
+        <div class="col-4"></div>
+      </div>
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-6">
+          <ul id="channels" style="list-style: none;text-float:left;">
+            {% for channel in channel_names %}
+              {% if channel==selected_channel %}
+                <li style="margin-bottom:10px;">
+                    <button data-channel="{{channel}}" type="button" class="channels btn btn-success"> {{channel}} </button>
+                </li>
+              {% else %}
+                <li style="margin-bottom:10px;">
+                    <button data-channel="{{channel}}" type="button" class="channels btn btn-secondary"> {{channel}} </button>
+                </li>
+              {% endif %}
+          {% endfor %}
+          </ul>
+        </div>
+        <div class="col-3"></div>
+      </div>
 
     </body>
 </html>
