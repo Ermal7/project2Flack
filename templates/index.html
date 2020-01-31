@@ -30,7 +30,7 @@
       <div class="row">
         <div class="col-2"></div>
         <div class="col-6">
-          <h6 style="color:black;text-float:left;margin-bottom:30px;"><strong>You are logged in as <span style="color:green;">{{display_name}}</span></strong></h6>
+          <h6 style="color:black;text-float:left;margin-bottom:30px;"><strong>You are logged in as <span style="color:green;">{{user}}</span></strong></h6>
         </div>
         <div class="col-4"></div>
       </div>
@@ -45,7 +45,7 @@
         <div class="col-2"></div>
         <div class="col-6">
           <ul id="display_names" style="list-style: none;text-float:left;">
-            {% for name in display_names %}
+            {% for name in users %}
               <li>
                   <p> Display Name: <span style="color:green;"> {{name}}</span></p>
               </li>
@@ -62,8 +62,8 @@
           <h6 style="text-float:center;margin-bottom:5px;"> <strong style="color:blue;">Create a New Channel:</strong></h6>
           <form id="channelform">
             <div class="form-group">
-              <label for="usr2">Channel Name:</label>
-              <input id="channel_name" type="text"  class="form-control" placeholder="Enter channel name" id="usr2">
+              <label for="channel_name">Channel Name:</label>
+              <input id="channel_name" type="text"  class="form-control" placeholder="Enter channel name" >
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
@@ -81,14 +81,14 @@
         <div class="col-2"></div>
         <div class="col-6">
           <ul id="channels" style="list-style: none;text-float:left;">
-            {% for channel in channel_names %}
-              {% if channel==selected_channel %}
+            {% for channel in channels %}
+              {% if channel.name == current_channel.name %}
                 <li style="margin-bottom:10px;">
-                    <button data-channel="{{channel}}" type="button" class="channels btn btn-success"> {{channel}} </button>
+                    <button data-channel="{{channel.name}}" type="button" class="channels btn btn-success"> {{channel.name}} </button>
                 </li>
               {% else %}
                 <li style="margin-bottom:10px;">
-                    <button data-channel="{{channel}}" type="button" class="channels btn btn-secondary"> {{channel}} </button>
+                    <button data-channel="{{channel.name}}" type="button" class="channels btn btn-secondary"> {{channel.name}} </button>
                 </li>
               {% endif %}
           {% endfor %}

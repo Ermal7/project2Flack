@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Creating New Channel
         document.querySelector('#channelform').onsubmit = () => {
           const channel_name = document.querySelector('#channel_name').value;
-          socket.emit('add channel', {'new_channel': channel_name});
+          socket.emit('add channel', {'channel_name': channel_name});
         };
       });
 
